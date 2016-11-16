@@ -3,6 +3,7 @@ package com.example.khoanguyen1.todolistfragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -56,6 +57,7 @@ public class todoItemListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private EditText editText;
     private Gson packer = new Gson();
+    private int selected_position = 0;
 
     public static SimpleItemRecyclerViewAdapter todoAdapter;
     /**
@@ -149,6 +151,7 @@ public class todoItemListActivity extends AppCompatActivity {
                     TodoListUtils.Entry entry = new TodoListUtils.Entry();
                     entry.setName(text);
                     entry.setChecked(false);
+                    entry.setDescription("Describe your todo item here!");
                     entry.setmImagePath("");
                     EntryList.todoList.add(entry);
                     todoAdapter.notifyDataSetChanged();
@@ -240,18 +243,31 @@ public class todoItemListActivity extends AppCompatActivity {
 //            holder.mContentView.setText(mValues.get(position).content);
 
             holder.bind(mTodoList.get(position));
+            if(selected_position == position){
+                holder.mTv.setTextColor(Color.BLUE);
+            }
+            else
+            {
+                holder.mTv.setTextColor(Color.BLACK);
+            }
             holder.mTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d("FLAG", "Goes in here!");
+                    notifyItemChanged(selected_position);
+                    selected_position = position;
+                    notifyItemChanged(selected_position);
                     if (mTwoPane) {
+//                        holder.mTv.setTextColor(Color.BLUE);
                         Bundle arguments = new Bundle();
                         arguments.putInt(todoItemDetailFragment.ARG_ITEM_ID, position);
                         todoItemDetailFragment fragment = new todoItemDetailFragment();
+
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.todoitem_detail_container, fragment)
                                 .commit();
+
                     } else {
 //                        Context context = v.getContext();
 //                        Intent intent = new Intent(context, todoItemDetailActivity.class);

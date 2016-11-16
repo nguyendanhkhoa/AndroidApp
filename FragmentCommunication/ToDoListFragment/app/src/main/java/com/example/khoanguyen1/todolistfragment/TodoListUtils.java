@@ -11,13 +11,16 @@ public class TodoListUtils {
         private boolean isChecked;
         private String imageId;
         private int entryID;
+        private String description;
 
-        public void setEntryID(int entryId){
-            this.entryID = entryId;
+
+
+        public void setDescription(String description){
+            this.description = description;
         }
 
-        public int getEntryId(){
-            return entryID;
+        public String getDescription(){
+            return description;
         }
 
         public void setImageId(String imageId){

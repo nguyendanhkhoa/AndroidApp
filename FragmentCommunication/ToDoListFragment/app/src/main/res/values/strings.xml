@@ -2,4 +2,6 @@
     <string name="app_name">To Do List Fragment</string>
     <string name="title_todoitem_detail">todoItem Detail</string>
     <string name="todo_hint">To do item to add</string>
+    <string name="description">To do item to add</string>
+
 </resources>

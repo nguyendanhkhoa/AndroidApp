@@ -88,6 +88,7 @@ public class todoItemDetailFragment extends Fragment {
 
 //        String stringId = getArguments().getString(ARG_ITEM_ID);
 
+
         id = getArguments().getInt(ARG_ITEM_ID);
 
 
@@ -96,9 +97,40 @@ public class todoItemDetailFragment extends Fragment {
         Button changeCheck = (Button) rootView.findViewById(R.id.check);
         chooseImage = (Button) rootView.findViewById(R.id.choose_image);
         iv = (ImageView) rootView.findViewById(R.id.image_view);
+        final EditText description = (EditText) rootView.findViewById(R.id.description);
 
         Button removeImage = (Button) rootView.findViewById(R.id.undo_image);
 
+        try {
+            File f = new File(EntryList.todoList.get(id).getImagePath());
+            Bitmap b = null;
+            try {
+                b = BitmapFactory.decodeStream(new FileInputStream(f));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            iv.setImageBitmap(b);
+        } catch (NullPointerException e) {
+            //e.printStackTrace();
+        }
+
+        description.setText(EntryList.todoList.get(id).getDescription());
+        description.setOnKeyListener(new View.OnKeyListener(){
+
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (description.getText().length() > 0
+                        && keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                        && i == KeyEvent.KEYCODE_ENTER) {
+
+                    EntryList.todoList.get(id).setDescription(description.getText().toString());
+                    todoItemListActivity.todoAdapter.notifyDataSetChanged();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
         et.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
