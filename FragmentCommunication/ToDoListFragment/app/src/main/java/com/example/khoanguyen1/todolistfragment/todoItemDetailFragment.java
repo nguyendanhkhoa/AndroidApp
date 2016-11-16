@@ -71,9 +71,6 @@ public class todoItemDetailFragment extends Fragment {
                 appBarLayout.setTitle(mItem.content);
             }
 
-
-
-
         }
 
 
@@ -89,8 +86,9 @@ public class todoItemDetailFragment extends Fragment {
 //            ((TextView) rootView.findViewById(R.id.todoitem_detail)).setText("Khoa");//mItem.details);
 //        }
 
-        String stringId = getArguments().getString(ARG_ITEM_ID);
-        id = 0;
+//        String stringId = getArguments().getString(ARG_ITEM_ID);
+
+        id = getArguments().getInt(ARG_ITEM_ID);
 
 
         et = (EditText) rootView.findViewById(R.id.edit_text_3);

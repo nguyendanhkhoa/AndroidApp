@@ -1,6 +1,5 @@
 package com.example.khoanguyen1.todolistfragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -180,7 +179,7 @@ public class todoItemListActivity extends AppCompatActivity {
     public void onStop() {
         writeToFile();
         super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
-// See https://g.co/AppIndexing/AndroidStudio for more information.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -247,7 +246,7 @@ public class todoItemListActivity extends AppCompatActivity {
                     Log.d("FLAG", "Goes in here!");
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-//                        arguments.putString(todoItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putInt(todoItemDetailFragment.ARG_ITEM_ID, position);
                         todoItemDetailFragment fragment = new todoItemDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
