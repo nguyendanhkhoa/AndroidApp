@@ -27,9 +27,6 @@ public class TodoListUtils {
             this.imageId = imageId;
         }
 
-        public String getImageId(){
-            return imageId;
-        }
         public String getName() {
             return mName;
         }
@@ -61,7 +58,6 @@ public class TodoListUtils {
 
         public void writeToParcel(Parcel out, int flags) {
             out.writeString(mName);
-            //out.write(mImageUrl);
             boolean[] arr = new boolean[1];
             arr[0] = isChecked;
             out.writeBooleanArray(arr);
@@ -72,7 +68,6 @@ public class TodoListUtils {
             public Entry createFromParcel(Parcel in) {
                 Entry a = new Entry();
                 a.setName(in.readString());
-                //a.setmImageUrl(in.readString());
                 boolean[] arr = new boolean[1];
                 in.readBooleanArray(arr);
                 a.setChecked(arr[0]);

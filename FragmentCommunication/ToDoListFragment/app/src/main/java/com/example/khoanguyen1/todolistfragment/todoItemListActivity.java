@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -44,11 +45,10 @@ import java.util.Stack;
  * An activity representing a list of todoItems. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link todoItemDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class todoItemListActivity extends AppCompatActivity {
+public class todoItemListActivity extends AppCompatActivity implements todoItemDetailFragment.SayHello{
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -58,6 +58,7 @@ public class todoItemListActivity extends AppCompatActivity {
     private EditText editText;
     private Gson packer = new Gson();
     private int selected_position = 0;
+    private todoItemDetailFragment fragment;
 
     public static SimpleItemRecyclerViewAdapter todoAdapter;
     /**
@@ -257,11 +258,11 @@ public class todoItemListActivity extends AppCompatActivity {
                     notifyItemChanged(selected_position);
                     selected_position = position;
                     notifyItemChanged(selected_position);
+                    
                     if (mTwoPane) {
-//                        holder.mTv.setTextColor(Color.BLUE);
                         Bundle arguments = new Bundle();
                         arguments.putInt(todoItemDetailFragment.ARG_ITEM_ID, position);
-                        todoItemDetailFragment fragment = new todoItemDetailFragment();
+                        fragment = new todoItemDetailFragment();
 
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -269,11 +270,6 @@ public class todoItemListActivity extends AppCompatActivity {
                                 .commit();
 
                     } else {
-//                        Context context = v.getContext();
-//                        Intent intent = new Intent(context, todoItemDetailActivity.class);
-//                        intent.putExtra(todoItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-//
-//                        context.startActivity(intent);
                         Intent intent = new Intent(v.getContext(), EditScreen.class);
 
                         intent.putExtra("id", position);
@@ -302,27 +298,6 @@ public class todoItemListActivity extends AppCompatActivity {
             super(itemView);
             mIv = (ImageView) itemView.findViewById(R.id.iv);
             mTv = (TextView) itemView.findViewById(R.id.textView);
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mTwoPane) {
-//                        Bundle arguments = new Bundle();
-//                        //arguments.putString(todoItemDetailFragment.ARG_ITEM_ID, ViewHolder.this.getAdapterPosition() + "");//holder.mItem.id);
-//                        todoItemDetailFragment fragment = new todoItemDetailFragment();
-//                        Log.d("Todo", "Goes in here");
-//                        fragment.setArguments(arguments);
-//                        getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.todoitem_detail_container, fragment)
-//                                .commit();
-//                    } else {
-//                        Intent intent = new Intent(v.getContext(), EditScreen.class);
-//
-//                        intent.putExtra("id", ViewHolder.this.getAdapterPosition());
-//                        v.getContext().startActivity(intent);
-//                    }
-//                }
-//            });
 
         }
 
@@ -385,5 +360,9 @@ public class todoItemListActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+    public void sayHello(){
+        getSupportFragmentManager().beginTransaction().remove( getSupportFragmentManager()
+                .findFragmentById(R.id.todoitem_detail_container)).commit();
     }
 }

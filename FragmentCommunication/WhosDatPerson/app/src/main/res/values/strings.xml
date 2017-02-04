@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WhosDatPerson</string>
+    <string name="action_settings">Settings</string>
+    <string name="Enter_word">Enter Tag for searching</string>
+</resources>

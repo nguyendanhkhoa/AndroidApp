@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,10 +32,9 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A fragment representing a single todoItem detail screen.
  * This fragment is either contained in a {@link todoItemListActivity}
- * in two-pane mode (on tablets) or a {@link todoItemDetailActivity}
  * on handsets.
  */
-public class todoItemDetailFragment extends Fragment {
+public class todoItemDetailFragment extends ContractFragment<todoItemDetailFragment.SayHello> {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -60,16 +62,14 @@ public class todoItemDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
 
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
-            }
+//            Activity activity = this.getActivity();
+//            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+//            if (appBarLayout != null) {
+//                appBarLayout.setTitle(mItem.content);
+//            }
 
         }
 
@@ -81,16 +81,7 @@ public class todoItemDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.todoitem_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
-//        if (mItem != null) {
-//            ((TextView) rootView.findViewById(R.id.todoitem_detail)).setText("Khoa");//mItem.details);
-//        }
-
-//        String stringId = getArguments().getString(ARG_ITEM_ID);
-
-
         id = getArguments().getInt(ARG_ITEM_ID);
-
 
         et = (EditText) rootView.findViewById(R.id.edit_text_3);
         Button button = (Button) rootView.findViewById(R.id.button);
@@ -192,15 +183,9 @@ public class todoItemDetailFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
         if (requestCode == 100) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
                 Uri uri = data.getData();
-                // Do something with the contact here (bigger example below)
-                //iv.setImageURI(uri);
                 File dir = getActivity().getFilesDir();
                 File writeToMe = null;
 
@@ -211,7 +196,6 @@ public class todoItemDetailFragment extends Fragment {
 
                     FileOutputStream fos;
                     fos = new FileOutputStream(writeToMe);
-                    // Use the compress method on the BitMap object to write image to the OutputStream
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                     fos.close();
                 } catch (Exception e) {
@@ -233,6 +217,26 @@ public class todoItemDetailFragment extends Fragment {
                 iv.setImageBitmap(b);
             }
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_item, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        EntryList.todoList.remove(id);
+        todoItemListActivity.todoAdapter.notifyDataSetChanged();
+        getContract().sayHello();
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    public interface SayHello {
+        void sayHello();
     }
 
 
